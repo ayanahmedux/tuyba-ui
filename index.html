@@ -774,20 +774,17 @@
     }
 
     .package-details {
-      flex: 0 0 auto;
-      padding: 8px 12px;
-      border: 1px solid #dce7ea;
-      border-radius: 8px;
-      background: #ffffff;
-      color: #073b4c;
-      font-size: 13px;
-      cursor: pointer;
-    }
+    background: #0cb0cb;
+    width: 2.8rem;
+    height: 2.8rem;
+    color: #fff;
+    cursor: pointer;
+    border: 0;
+    border-radius: 50%;
+    place-items: center;
+    display: grid;
+}
 
-    .package-details:hover {
-      border-color: #0a9db0;
-      background: #f0fafb;
-    }
 
     .package-detail-copy {
       margin-top: 12px;
@@ -1162,7 +1159,7 @@
               <p class="package-duration">5 days · 4 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$2,800</strong><span>/ per person</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-makkah">View details</button>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-makkah">↗</button>
               </div>
               <p class="package-detail-copy" id="detail-makkah" hidden>Stay close to the Haram with practical lodging and a coordinator available throughout your journey.</p>
             </div>
@@ -1181,8 +1178,7 @@
               <p class="package-duration">8 days · 7 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$4,200</strong><span>/ per family</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-family">View details</button>
-              </div>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-family">↗</button>              </div>
               <p class="package-detail-copy" id="detail-family" hidden>A family-paced Makkah and Madinah itinerary with a dedicated trip coordinator.</p>
             </div>
           </article>
@@ -1200,8 +1196,7 @@
               <p class="package-duration">10 days · 9 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$7,500</strong><span>/ per person</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-premium">View details</button>
-              </div>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-premium">↗</button>              </div>
               <p class="package-detail-copy" id="detail-premium" hidden>Premium accommodation near the Haram, private transfers, and personal trip support.</p>
             </div>
           </article>
@@ -1219,9 +1214,8 @@
               <p class="package-duration">9 days · 8 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$5,100</strong><span>/ per family</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-madinah">View details</button>
-              </div>
-              <p class="package-detail-copy" id="detail-madinah" hidden>Visit both holy cities with arranged transport and a dedicated family coordinator.</p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-family">↗</button>              </div>
+              <p class="package-detail-copy" id="detail-family" hidden>Visit both holy cities with arranged transport and a dedicated family coordinator.</p>
             </div>
           </article>
 
@@ -1238,8 +1232,7 @@
               <p class="package-duration">6 days · 5 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$3,200</strong><span>/ per person</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-departure">View details</button>
-              </div>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-departure">↗</button>              </div>
               <p class="package-detail-copy" id="detail-departure" hidden>Flight planning and departure-day assistance from your chosen US city.</p>
             </div>
           </article>
@@ -1257,8 +1250,7 @@
               <p class="package-duration">12 days · 11 nights</p>
               <div class="package-card-footer">
                 <p class="package-price"><strong>$9,800</strong><span>/ per person</span></p>
-                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-guide">View details</button>
-              </div>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-guide">↗</button>              </div>
               <p class="package-detail-copy" id="detail-guide" hidden>A private guide, flexible daily schedule, and tailored support in both cities.</p>
             </div>
           </article>
@@ -1468,7 +1460,7 @@
         const details = document.getElementById(button.getAttribute("aria-controls"));
         const isExpanded = button.getAttribute("aria-expanded") === "true";
         button.setAttribute("aria-expanded", String(!isExpanded));
-        button.textContent = isExpanded ? "View details" : "Hide details";
+        button.textContent = isExpanded ? "↗" : "↗";
         details.hidden = isExpanded;
       });
     });
