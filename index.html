@@ -4,16 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tuuba - Hero Section</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --header-height: 72px;
+      --font-body: "Plus Jakarta Sans", Arial, sans-serif;
+      --font-medium: "Plus Jakarta Sans", Arial, sans-serif;
+      --font-semi: "Plus Jakarta Sans", Arial, sans-serif;
+      --font-bold: "Plus Jakarta Sans", Arial, sans-serif;
+      --weight-body: 400;
+      --weight-medium: 500;
+      --weight-semi: 600;
+      --weight-bold: 700;
+      --radius-sm: 0.75rem;
+      --radius-md: 1.25rem;
+      --radius-lg: 2rem;
+      --shadow: 0 1.5rem 4rem #023f511f;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-body);
     }
 
     body {
@@ -853,73 +868,12 @@
       }
     }
 
-    .consultation-section {
-      padding: 0 24px 96px;
-      background: #f5fafb;
-      color: #073b4c;
-    }
-
-    .consultation-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      width: min(1080px, 100%);
-      margin: 0 auto;
-      padding: 18px 24px;
-      border: 1px solid #e1eaed;
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 3px 10px rgba(5, 52, 67, 0.08);
-    }
-
-    .consultation-icon {
-      display: grid;
-      width: 42px;
-      flex: 0 0 42px;
-      aspect-ratio: 1;
-      place-items: center;
-      border-radius: 50%;
-      background: #eaf8fa;
-      color: #08a9bd;
-      font-size: 21px;
-    }
-
-    .consultation-copy h2 {
-      margin-bottom: 3px;
-      color: #073b4c;
-      font-size: 16px;
-    }
-
-    .consultation-copy p {
-      color: #8398a0;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .consultation-button {
-      min-height: 44px;
-      margin-left: auto;
-      padding: 0 28px;
-      border: 0;
-      border-radius: 8px;
-      background: #00495b;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .consultation-button:hover {
-      background: #006176;
-    }
-
     .site-footer {
       position: relative;
       z-index: 2;
       isolation: isolate;
       padding: 68px 24px 22px;
-      background: #00495b;
+      background: #023f51;
       color: #ffffff;
     }
 
@@ -998,24 +952,6 @@
     }
 
     @media (max-width: 520px) {
-      .consultation-section {
-        padding: 0 18px 64px;
-      }
-
-      .consultation-card {
-        flex-wrap: wrap;
-        padding: 18px;
-      }
-
-      .consultation-copy {
-        flex: 1 1 calc(100% - 60px);
-      }
-
-      .consultation-button {
-        width: 100%;
-        margin-left: 0;
-      }
-
       .site-footer {
         padding: 52px 20px 20px;
       }
@@ -1070,7 +1006,7 @@
       </div>
 
       <!-- Right Form Widget -->
-      <div class="booking-card">
+      <div class="booking-card" id="consultation">
         <div class="card-title">Plan your Umrah</div>
         <div class="tabs">
           <div class="tab">Value</div>
@@ -1257,14 +1193,946 @@
         </div>
       </div>
     </section>
-    <section class="consultation-section" id="consultation" aria-label="Free consultation">
-      <div class="consultation-card">
-        <span class="consultation-icon" aria-hidden="true">&#9742;</span>
-        <div class="consultation-copy">
-          <h2>Not sure which package fits?</h2>
-          <p>Talk to a specialist - no sales pressure, just honest guidance.</p>
+    <style>
+      .journey-section {
+        --journey-ink: #064657;
+        --journey-accent: #09b5ca;
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+        min-height: 690px;
+        background: #eef6f6;
+        color: var(--journey-ink);
+      }
+
+      .journey-section * {
+        font-family: var(--font-body);
+        font-weight: var(--weight-body);
+      }
+
+      .journey-visual {
+        position: sticky;
+        top: var(--header-height);
+        align-self: start;
+        height: calc(100vh - var(--header-height));
+        min-height: 420px;
+        overflow: hidden;
+        background: #74898b;
+      }
+
+      .journey-visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .journey-visual::after {
+        position: absolute;
+        inset: 45% 0 0;
+        background: linear-gradient(transparent, rgba(3, 26, 32, 0.4));
+        content: "";
+      }
+
+      .journey-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: min(100%, 730px);
+        margin: 0 auto;
+        padding: 76px clamp(38px, 7vw, 104px);
+      }
+
+      .journey-eyebrow {
+        margin-bottom: 18px;
+        color: #069eb4;
+        font-size: 11px;
+        font-family: var(--font-bold);
+        font-weight: var(--weight-bold);
+        letter-spacing: 1.4px;
+      }
+
+      .journey-content h2 {
+        max-width: 560px;
+        margin-bottom: 48px;
+        color: var(--journey-ink);
+        font-size: clamp(38px, 4.4vw, 62px);
+        font-family: var(--font-bold);
+        font-weight: var(--weight-bold);
+        line-height: 1.08;
+      }
+
+      .journey-timeline {
+        display: grid;
+        gap: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .journey-stop {
+        position: relative;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 22px;
+        min-height: 104px;
+      }
+
+      .journey-stop:not(:last-child)::before {
+        position: absolute;
+        top: 46px;
+        bottom: 0;
+        left: 23px;
+        width: 1px;
+        background: #b7d2d6;
+        content: "";
+      }
+
+      .journey-number {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border: 1px solid var(--journey-accent);
+        border-radius: 50%;
+        background: #f8fcfc;
+        color: #527982;
+        font-size: 13px;
+      }
+
+      .journey-stop-copy {
+        padding: 2px 0 22px;
+      }
+
+      .journey-day {
+        margin-bottom: 7px;
+        color: #079eb2;
+        font-size: 10px;
+        font-family: var(--font-bold);
+        font-weight: var(--weight-bold);
+        letter-spacing: 1px;
+      }
+
+      .journey-stop h3 {
+        margin-bottom: 7px;
+        color: var(--journey-ink);
+        font-size: 18px;
+        font-family: var(--font-semi);
+        font-weight: var(--weight-semi);
+        line-height: 1.25;
+      }
+
+      .journey-stop p:last-child {
+        color: #557680;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .journey-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+        align-self: flex-start;
+        min-height: 52px;
+        margin: 8px 0 0 66px;
+        padding: 0 9px 0 22px;
+        border-radius: 999px;
+        background: #09b2c7;
+        color: #ffffff;
+        font-size: 13px;
+        font-family: var(--font-medium);
+        font-weight: var(--weight-medium);
+        text-decoration: none;
+        transition: background-color 0.2s, transform 0.2s;
+      }
+
+      .journey-link:hover {
+        transform: translateY(-2px);
+        background: #078da1;
+      }
+
+      .journey-link span {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: #ffffff;
+        color: var(--journey-ink);
+        font-size: 16px;
+      }
+
+      @media (max-width: 760px) {
+        .journey-section {
+          grid-template-columns: 1fr;
+        }
+
+        .journey-visual {
+          position: relative;
+          top: auto;
+          align-self: auto;
+          height: 360px;
+          min-height: 360px;
+        }
+
+        .journey-content {
+          width: min(100%, 680px);
+          padding: 58px 28px 68px;
+        }
+
+        .journey-content h2 {
+          margin-bottom: 38px;
+          font-size: 42px;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .journey-visual {
+          height: 300px;
+          min-height: 300px;
+        }
+
+        .journey-content {
+          padding-right: 22px;
+          padding-left: 22px;
+        }
+
+        .journey-content h2 {
+          font-size: 36px;
+        }
+
+        .journey-stop {
+          grid-template-columns: 42px minmax(0, 1fr);
+          gap: 16px;
+        }
+
+        .journey-number {
+          width: 40px;
+          height: 40px;
+        }
+
+        .journey-stop:not(:last-child)::before {
+          left: 20px;
+        }
+
+        .journey-link {
+          margin-left: 58px;
+        }
+      }
+    </style>
+    <section class="journey-section" id="itinerary" aria-labelledby="journey-title">
+      <div class="journey-visual">
+        <img src="assets/images.jpg" alt="Traveler preparing for a flight at an airport" loading="lazy">
+      </div>
+      <div class="journey-content">
+        <p class="journey-eyebrow">A JOURNEY WITH RHYTHM</p>
+        <h2 id="journey-title">See how your Umrah can unfold</h2>
+        <ol class="journey-timeline">
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">01</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">DAY 1</p>
+              <h3>Depart from USA</h3>
+              <p>Depart from your home city through your nearest airport.</p>
+            </div>
+          </li>
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">02</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">DAY 2</p>
+              <h3>Arrive in Madinah</h3>
+              <p>Meet your coordinator and transfer to your hotel.</p>
+            </div>
+          </li>
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">03</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">DAYS 3–5</p>
+              <h3>Madinah stay</h3>
+              <p>Visit Masjid an-Nabawi and sacred sites at your pace.</p>
+            </div>
+          </li>
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">04</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">DAY 6</p>
+              <h3>Journey to Makkah</h3>
+              <p>Travel comfortably, prepare for Ihram and begin Umrah.</p>
+            </div>
+          </li>
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">05</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">DAYS 7–10</p>
+              <h3>Makkah stay</h3>
+              <p>Perform Tawaf, Sa’i and Umrah with guided support.</p>
+            </div>
+          </li>
+          <li class="journey-stop">
+            <span class="journey-number" aria-hidden="true">06</span>
+            <div class="journey-stop-copy">
+              <p class="journey-day">RETURN</p>
+              <h3>Depart for home</h3>
+              <p>A smooth airport transfer closes your journey.</p>
+            </div>
+          </li>
+        </ol>
+        <a class="journey-link" href="#consultation">View full itinerary <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </section>
+    <style>
+      .guides-section {
+        position: relative;
+        z-index: 2;
+        padding: 104px 24px 96px;
+        background: #ffffff;
+        color: #073b4c;
+        font-family: "Plus Jakarta Sans", Arial, sans-serif;
+      }
+
+      .guides-section * {
+        font-family: "Plus Jakarta Sans", Arial, sans-serif;
+      }
+
+      .guides-shell {
+        width: min(1200px, 100%);
+        margin: 0 auto;
+      }
+
+      .guides-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+        align-items: end;
+        gap: 64px;
+        margin-bottom: 48px;
+      }
+
+      .guides-eyebrow {
+        margin-bottom: 18px;
+        color: #08a9bd;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+      }
+
+      .guides-heading h2 {
+        max-width: 500px;
+        color: #073b4c;
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 1.05;
+      }
+
+      .guides-intro {
+        max-width: 400px;
+        padding-bottom: 4px;
+        color: #52717c;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .guides-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .guide-card {
+        min-width: 0;
+      }
+
+      .guide-image {
+        aspect-ratio: 1.52;
+        overflow: hidden;
+        border-radius: 17px;
+        background: #dce9eb;
+      }
+
+      .guide-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+
+      .guide-card:hover .guide-image img {
+        transform: scale(1.035);
+      }
+
+      .guide-meta {
+        margin: 18px 0 12px;
+        color: #08a9bd;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+      }
+
+      .guide-card h3 {
+        min-height: 52px;
+        margin-bottom: 12px;
+        color: #073b4c;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .guide-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #52717c;
+        color: #52717c;
+        font-size: 12px;
+        text-decoration: none;
+        transition: color 0.2s, border-color 0.2s;
+      }
+
+      .guide-link:hover {
+        border-color: #08a9bd;
+        color: #078da1;
+      }
+
+      .guides-section.guides-reveal-ready .guides-heading,
+      .guides-section.guides-reveal-ready .guide-card {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 0.65s ease, transform 0.65s ease;
+      }
+
+      .guides-section.guides-reveal-ready .guides-heading.is-visible,
+      .guides-section.guides-reveal-ready .guide-card.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .guides-section.guides-reveal-ready .guide-card:nth-child(2) {
+        transition-delay: 120ms;
+      }
+
+      .guides-section.guides-reveal-ready .guide-card:nth-child(3) {
+        transition-delay: 240ms;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .guides-section.guides-reveal-ready .guides-heading,
+        .guides-section.guides-reveal-ready .guide-card {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .guides-heading {
+          grid-template-columns: minmax(0, 1fr) minmax(250px, 340px);
+          gap: 36px;
+        }
+
+        .guides-heading h2 {
+          font-size: 54px;
+        }
+
+        .guides-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          row-gap: 32px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .guides-section {
+          padding: 64px 20px 72px;
+        }
+
+        .guides-heading {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          margin-bottom: 34px;
+        }
+
+        .guides-heading h2 {
+          font-size: 42px;
+        }
+
+        .guides-intro {
+          max-width: 440px;
+          font-size: 14px;
+        }
+
+        .guides-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .guide-card h3 {
+          min-height: 0;
+        }
+      }
+    </style>
+    <section class="guides-section" id="guides" aria-labelledby="guides-title">
+      <div class="guides-shell">
+        <div class="guides-heading">
+          <div>
+            <p class="guides-eyebrow">UMRAH GUIDES</p>
+            <h2 id="guides-title">Prepare with confidence</h2>
+          </div>
+          <p class="guides-intro">Clear, practical guidance for your family, written by specialists who understand the journey.</p>
         </div>
-        <button class="consultation-button" type="button" data-scroll-to-booking>Free consultation</button>
+        <div class="guides-grid">
+          <article class="guide-card">
+            <div class="guide-image">
+              <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Pilgrims gathered around the Kaaba in Makkah" loading="lazy">
+            </div>
+            <p class="guide-meta">GUIDE · 8 MIN</p>
+            <h3>How to prepare for Umrah from the USA</h3>
+            <a class="guide-link" href="#itinerary">Read guide <span aria-hidden="true">&#8599;</span></a>
+          </article>
+          <article class="guide-card">
+            <div class="guide-image">
+              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Pilgrims walking together through a mosque courtyard" loading="lazy">
+            </div>
+            <p class="guide-meta">PREPARATION · 5 MIN</p>
+            <h3>What is included in an Umrah package?</h3>
+            <a class="guide-link" href="#packages">Read guide <span aria-hidden="true">&#8599;</span></a>
+          </article>
+          <article class="guide-card">
+            <div class="guide-image">
+              <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Mosque architecture and minarets" loading="lazy">
+            </div>
+            <p class="guide-meta">FAMILY · 6 MIN</p>
+            <h3>Choosing the right package for your family</h3>
+            <a class="guide-link" href="#packages">Read guide <span aria-hidden="true">&#8599;</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <style>
+      .testimonial-section {
+        position: relative;
+        z-index: 2;
+        padding: 0 24px 104px;
+        background: #ffffff;
+        color: #073b4c;
+      }
+
+      .testimonial-shell {
+        width: min(1200px, 100%);
+        margin: 0 auto;
+        padding: 108px 0 0;
+        border-top: 1px solid #d9e3e5;
+      }
+
+      .testimonial-quote-mark {
+        margin-bottom: 38px;
+        color: #12b4c8;
+        font-size: 76px;
+        font-weight: 700;
+        line-height: 0.8;
+        text-align: center;
+      }
+
+      .testimonial-quote {
+        max-width: 850px;
+        margin: 0 auto;
+        color: #073b4c;
+        font-size: 44px;
+        font-weight: 400;
+        line-height: 1.4;
+        text-align: center;
+      }
+
+      .testimonial-attribution {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 38px;
+      }
+
+      .testimonial-avatar {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        place-items: center;
+        overflow: hidden;
+        border-radius: 50%;
+        background: #e5f4f5;
+        color: #087f91;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .testimonial-avatar img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .testimonial-person {
+        display: grid;
+        gap: 4px;
+        color: #073b4c;
+        font-size: 12px;
+      }
+
+      .testimonial-person span {
+        color: #8398a0;
+      }
+
+      @media (max-width: 600px) {
+        .testimonial-section {
+          padding: 0 20px 76px;
+        }
+
+        .testimonial-shell {
+          padding-top: 72px;
+        }
+
+        .testimonial-quote-mark {
+          margin-bottom: 34px;
+          font-size: 50px;
+        }
+
+        .testimonial-quote {
+          font-size: 34px;
+          line-height: 1.3;
+        }
+
+        .testimonial-attribution {
+          margin-top: 30px;
+        }
+      }
+    </style>
+    <section class="testimonial-section" aria-label="Traveler testimonial">
+      <div class="testimonial-shell">
+        <figure>
+          <div class="testimonial-quote-mark" aria-hidden="true">&#8220;</div>
+          <blockquote class="testimonial-quote">
+            <p>&ldquo;Tuyba made every step feel calm. We always knew what came next, and there was a real person to call whenever our family had a question.&rdquo;</p>
+          </blockquote>
+          <figcaption class="testimonial-attribution">
+            <span class="testimonial-avatar" aria-hidden="true"><img src="assets/aisha.png" alt=""></span>
+            <span class="testimonial-person"><strong>Aisha Rahman</strong><span>Umrah traveler, Chicago</span></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <style>
+      .faq-section {
+        position: relative;
+        z-index: 2;
+        padding: 0 24px 104px;
+        background: #ffffff;
+        color: #073b4c;
+      }
+
+      .faq-shell {
+        display: grid;
+        grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+        align-items: center;
+        gap: 80px;
+        width: min(1200px, 100%);
+        margin: 0 auto;
+        padding-top: 64px;
+        border-top: 1px solid #d9e3e5;
+      }
+
+      .faq-visual {
+        position: relative;
+        aspect-ratio: 0.96;
+        overflow: hidden;
+        border-radius: 18px;
+        background: #dce9eb;
+      }
+
+      .faq-visual::after {
+        position: absolute;
+        inset: 42% 0 0;
+        background: linear-gradient(transparent, rgba(3, 28, 36, 0.8));
+        content: "";
+      }
+
+      .faq-visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .faq-visual-copy {
+        position: absolute;
+        z-index: 1;
+        right: 28px;
+        bottom: 30px;
+        left: 28px;
+      }
+
+      .faq-eyebrow {
+        margin-bottom: 12px;
+        color: #54d6e4;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      .faq-visual h2 {
+        color: #ffffff;
+        font-size: 38px;
+        line-height: 1.1;
+      }
+
+      .faq-list {
+        border-top: 1px solid #d9e3e5;
+      }
+
+      .faq-item {
+        border-bottom: 1px solid #d9e3e5;
+      }
+
+      .faq-item summary {
+        display: flex;
+        min-height: 76px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: #073b4c;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+        list-style: none;
+        cursor: pointer;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary:focus-visible {
+        outline: 2px solid #08a9bd;
+        outline-offset: 3px;
+      }
+
+      .faq-toggle {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        place-items: center;
+        border: 1px solid #d5e2e5;
+        border-radius: 50%;
+        color: #073b4c;
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      .faq-toggle::before {
+        content: "+";
+      }
+
+      .faq-item[open] .faq-toggle::before {
+        content: "−";
+      }
+
+      .faq-answer {
+        max-width: 560px;
+        padding: 0 50px 20px 0;
+        color: #617f88;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 900px) {
+        .faq-shell {
+          grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+          gap: 44px;
+        }
+
+        .faq-visual h2 {
+          font-size: 34px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .faq-section {
+          padding: 0 20px 76px;
+        }
+
+        .faq-shell {
+          grid-template-columns: 1fr;
+          gap: 34px;
+          padding-top: 48px;
+        }
+
+        .faq-visual {
+          aspect-ratio: 1.25;
+        }
+
+        .faq-visual h2 {
+          font-size: 34px;
+        }
+
+        .faq-item summary {
+          min-height: 68px;
+          font-size: 15px;
+        }
+      }
+    </style>
+    <section class="faq-section" id="faq" aria-label="Frequently asked questions">
+      <div class="faq-shell">
+        <div class="faq-visual">
+          <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Pilgrims gathered around the Kaaba in Makkah" loading="lazy">
+          <div class="faq-visual-copy">
+            <p class="faq-eyebrow">HERE TO HELP</p>
+            <h2>Common questions</h2>
+          </div>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How do I find Umrah packages from my city?<span class="faq-toggle" aria-hidden="true"></span></summary>
+            <p class="faq-answer">Share your departure city and travel dates, and a Tuuba specialist will help you compare available package options.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Are flights included in Tuuba packages?<span class="faq-toggle" aria-hidden="true"></span></summary>
+            <p class="faq-answer">Flight inclusion depends on the package. Your specialist will confirm the itinerary and what is covered before you book.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I speak to someone before I decide?<span class="faq-toggle" aria-hidden="true"></span></summary>
+            <p class="faq-answer">Yes. Speak with a real travel specialist for clear, no-pressure guidance before you decide.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does visa assistance mean?<span class="faq-toggle" aria-hidden="true"></span></summary>
+            <p class="faq-answer">We explain the visa steps and help you prepare the required information. Visa approval is determined by the relevant authorities.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+    <style>
+      .haram-cta-section {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        min-height: 620px;
+        place-items: center;
+        overflow: hidden;
+        background: #032e3a;
+        color: #ffffff;
+      }
+
+      .haram-cta-image,
+      .haram-cta-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .haram-cta-image {
+        object-fit: cover;
+        object-position: center 48%;
+      }
+
+      .haram-cta-overlay {
+        background: linear-gradient(90deg, rgba(1, 25, 34, 0.62), rgba(1, 25, 34, 0.48) 50%, rgba(1, 25, 34, 0.58));
+      }
+
+      .haram-cta-content {
+        position: relative;
+        z-index: 1;
+        width: min(940px, calc(100% - 48px));
+        padding: 96px 0;
+        text-align: center;
+      }
+
+      .haram-cta-eyebrow {
+        margin-bottom: 24px;
+        color: #50d4e3;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+      }
+
+      .haram-cta-content h2 {
+        color: #ffffff;
+        font-size: 76px;
+        line-height: 1.02;
+      }
+
+      .haram-cta-copy {
+        margin-top: 24px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .haram-cta-link {
+        display: inline-flex;
+        min-height: 56px;
+        align-items: center;
+        gap: 18px;
+        margin-top: 32px;
+        padding: 0 9px 0 24px;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #073b4c;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.2s, background-color 0.2s;
+      }
+
+      .haram-cta-link:hover {
+        transform: translateY(-2px);
+        background: #f0fbfc;
+      }
+
+      .haram-cta-link span {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 50%;
+        background: #12b4c8;
+        color: #ffffff;
+        font-size: 16px;
+      }
+
+      @media (max-width: 700px) {
+        .haram-cta-section {
+          min-height: 540px;
+        }
+
+        .haram-cta-content {
+          width: min(100% - 40px, 540px);
+          padding: 80px 0;
+        }
+
+        .haram-cta-content h2 {
+          font-size: 46px;
+        }
+
+        .haram-cta-copy {
+          max-width: 360px;
+          margin: 20px auto 0;
+          font-size: 15px;
+        }
+      }
+    </style>
+    <section class="haram-cta-section" aria-labelledby="haram-cta-title">
+      <img class="haram-cta-image" src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=2000&amp;h=900&amp;q=90" alt="Kaaba at Masjid al-Haram in Makkah" loading="lazy">
+      <div class="haram-cta-overlay" aria-hidden="true"></div>
+      <div class="haram-cta-content">
+        <p class="haram-cta-eyebrow">A SACRED JOURNEY, PERSONALLY GUIDED</p>
+        <h2 id="haram-cta-title">Let's begin your<br>journey to the Haram.</h2>
+        <p class="haram-cta-copy">Built around your city, your family and your pace.</p>
+        <a class="haram-cta-link" href="#consultation">Talk to a specialist <span aria-hidden="true">&#8599;</span></a>
       </div>
     </section>
   </main>
@@ -1472,13 +2340,6 @@
       });
     });
 
-    document.querySelector("[data-scroll-to-booking]").addEventListener("click", () => {
-      document.querySelector(".booking-card").scrollIntoView({
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-        block: "center"
-      });
-    });
-
     document.querySelector("#footer-year").textContent = new Date().getFullYear();
 
     const backgroundLayer = document.querySelector(".page-background");
@@ -1502,6 +2363,22 @@
     window.addEventListener("scroll", syncBackgroundVideo, { passive: true });
     window.addEventListener("resize", syncBackgroundVideo);
     syncBackgroundVideo();
+
+    const guidesSection = document.querySelector(".guides-section");
+    if (guidesSection && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const guideRevealTargets = [guidesSection.querySelector(".guides-heading"), ...guidesSection.querySelectorAll(".guide-card")];
+      const guideRevealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      guidesSection.classList.add("guides-reveal-ready");
+      guideRevealTargets.forEach((target) => guideRevealObserver.observe(target));
+    }
 
   </script>
 </body>
