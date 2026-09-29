@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuuba - Hero Section</title>
+  <style>
+    :root {
+      --header-height: 72px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0b1320;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .page-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .page-background.background-hidden {
+      opacity: 0;
+    }
+
+    .hero-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-story {
+      position: relative;
+      height: 200vh;
+    }
+
+    .story-stage {
+      position: sticky;
+      top: var(--header-height);
+      height: calc(100vh - var(--header-height));
+      overflow: hidden;
+    }
+
+    .hero-story.static-story {
+      height: auto;
+    }
+
+    .hero-story.static-story .story-stage {
+      position: relative;
+      top: auto;
+      height: auto;
+      overflow: visible;
+    }
+
+    .hero-story.static-story .hero-container,
+    .hero-story.static-story .about-section {
+      position: relative;
+      inset: auto;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    .bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      transform-origin: center;
+      will-change: transform;
+    }
+
+    /* --- Overlays --- */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /*
+      Blue overlay — pure vignette.
+      Fully transparent in the CENTER so the video shows through untouched.
+      Blue color only builds up toward the OUTER BORDER / edges of the section.
+    */
+    .overlay-blue {
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 75% 75% at 50% 50%,
+      rgba(0, 8, 14, 0.62) 0%,          /* center: dark near-black */
+      rgba(0, 8, 14, 0.58) 40%,
+      rgba(8, 60, 78, 0.42) 62%,        /* muted deep teal building up */
+      rgba(10, 78, 98, 0.62) 80%,       /* darker teal, less saturated */
+      rgba(12, 92, 112, 0.80) 93%,      /* deep teal-black near border */
+      rgba(14, 100, 120, 0.95) 100%);   /* border: dark muted teal */
+  will-change: opacity;
+}
+
+    /* Dark overlay — hidden during hero, fades in on scroll */
+    .overlay-dark {
+      z-index: 1;
+      opacity: 0;
+      background:
+        radial-gradient(ellipse 100% 90% at 50% 50%,
+          rgba(0, 0, 0, 0.62) 0%,
+          rgba(0, 0, 0, 0.72) 55%,
+          rgba(0, 0, 0, 0.84) 100%);
+      will-change: opacity;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--header-height);
+      padding: 0 80px;
+      background: rgba(4, 22, 31, 0.16);
+    }
+
+    header.header-scrolled {
+      background: #3d505a;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    nav a {
+      color: #d1d5db;
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      padding: 11px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .btn-nav:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.65);
+    }
+
+    /* Hero Main Content */
+    .hero-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 40px 80px;
+      gap: 40px;
+    }
+
+    .hero-left {
+      flex: 1;
+      max-width: 550px;
+    }
+
+    .hero-eyebrow {
+      margin-bottom: 28px;
+      color: #12b4c8;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .hero-left h1 {
+      font-size: 64px;
+      line-height: 1.08;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .hero-left h1 span {
+      color: #12b4c8;
+    }
+
+    .hero-left p {
+      font-size: 16px;
+      color: #b8c9ce;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      background-color: #12b4c8;
+      color: #063442;
+      border: 1px solid #12b4c8;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #27c2d4;
+      border-color: #27c2d4;
+    }
+
+    .btn-secondary {
+      background-color: rgba(4, 22, 31, 0.18);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Booking Card */
+    .booking-card {
+      background: #ffffff;
+      border: 1px solid #edf2f4;
+      border-radius: 20px;
+      padding: 24px;
+      width: 350px;
+      flex: 0 0 350px;
+      margin-left: auto;
+      color: #073b4c;
+      box-shadow: 0 20px 48px rgba(0, 25, 35, 0.22);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #073b4c;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f2f7f8;
+      padding: 4px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 13px;
+      color: #73858c;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .tab.active {
+      background: #ffffff;
+      color: #073b4c;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(7, 59, 76, 0.12);
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 11px;
+      color: #71838b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .input-box {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #dce6e9;
+      border-radius: 8px;
+      padding: 12px;
+      color: #073b4c;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-box::placeholder {
+      color: #98a9af;
+    }
+
+    .input-box:focus {
+      border-color: #12b4c8;
+      box-shadow: 0 0 0 3px rgba(18, 180, 200, 0.14);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #00495b;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: #006176;
+    }
+
+    /* Stats Section Bottom */
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      width: min(680px, calc(100% - 48px));
+      margin: 0 auto 36px;
+      overflow: hidden;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      flex: 1;
+      min-width: 0;
+      padding: 20px 12px;
+      text-align: center;
+    }
+
+    .stat-item + .stat-item {
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .stat-item:nth-child(2) {
+      background: rgba(8, 145, 178, 0.22);
+    }
+
+    .stat-item h3 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .stat-item:nth-child(2) h3 {
+      color: #22d3ee;
+    }
+
+    .stat-item p {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .about-section {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      min-height: 0;
+      padding: 80px 24px;
+    }
+
+    .about-content {
+      width: min(900px, 100%);
+      text-align: center;
+    }
+
+    .about-eyebrow {
+      margin-bottom: 24px;
+      color: #22d3ee;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .about-content h2 {
+      font-size: 44px;
+      line-height: 1.16;
+      font-weight: 700;
+    }
+
+    .about-description {
+      max-width: 620px;
+      margin: 24px auto 0;
+      color: #cbd5e1;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .about-section .stats-container {
+      margin-top: 48px;
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 800px) {
+      header {
+        padding: 0 32px;
+      }
+
+      nav {
+        gap: 16px;
+      }
+
+      .hero-body {
+        padding: 32px;
+        gap: 24px;
+      }
+
+      .hero-left {
+        max-width: none;
+      }
+
+      .hero-left h1 {
+        font-size: 48px;
+      }
+
+      .booking-card {
+        width: auto;
+        flex-basis: 44%;
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --header-height: 64px;
+      }
+
+      header {
+        padding: 0 20px;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hero-body {
+        padding: 32px 24px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-left h1 {
+        font-size: 42px;
+      }
+
+      .hero-eyebrow {
+        margin-bottom: 18px;
+      }
+
+      .booking-card {
+        width: 100%;
+        flex-basis: auto;
+      }
+
+      .stats-container {
+        width: calc(100% - 32px);
+        margin-bottom: 24px;
+      }
+
+      .stat-item {
+        padding: 16px 8px;
+      }
+
+      .stat-item h3 {
+        font-size: 22px;
+      }
+
+      .stat-item p {
+        font-size: 11px;
+      }
+
+      .about-content h2 {
+        font-size: 30px;
+      }
+
+      .about-section .stats-container {
+        margin-top: 36px;
+      }
+    }
+
+    .packages-section {
+      position: relative;
+      z-index: 2;
+      padding: 76px 24px 96px;
+      background: #f5fafb;
+      color: #073b4c;
+    }
+
+    .packages-shell {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+    }
+
+    .packages-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      align-items: end;
+      gap: 64px;
+      margin-bottom: 62px;
+    }
+
+    .packages-kicker {
+      margin-bottom: 12px;
+      color: #08a9bd;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .packages-heading h2 {
+      max-width: 520px;
+      font-size: 44px;
+      line-height: 1.1;
+      color: #073b4c;
+    }
+
+    .packages-intro {
+      padding-bottom: 4px;
+      color: #52717c;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .packages-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .package-filters,
+    .package-browse {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .package-filter {
+      min-height: 38px;
+      padding: 0 18px;
+      border: 1px solid #d7e4e8;
+      border-radius: 999px;
+      background: transparent;
+      color: #496a76;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    }
+
+    .package-filter[aria-pressed="true"] {
+      border-color: #00495b;
+      background: #00495b;
+      color: #ffffff;
+    }
+
+    .package-filter:hover:not([aria-pressed="true"]) {
+      border-color: #7eabb7;
+      background: #ffffff;
+    }
+
+    .package-arrow {
+      display: grid;
+      width: 40px;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid #d7e4e8;
+      border-radius: 50%;
+      background: transparent;
+      color: #52717c;
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    }
+
+    .package-arrow:hover {
+      border-color: #00495b;
+      background: #00495b;
+      color: #ffffff;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .package-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid #e1eaed;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 5px 16px rgba(5, 52, 67, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .package-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(5, 52, 67, 0.15);
+    }
+
+    .package-card[hidden] {
+      display: none;
+    }
+
+    .package-image {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+      background: #dce9eb;
+    }
+
+    .package-image::after {
+      position: absolute;
+      inset: 45% 0 0;
+      background: linear-gradient(transparent, rgba(3, 22, 29, 0.68));
+      content: "";
+      pointer-events: none;
+    }
+
+    .package-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+
+    .package-card:hover .package-image img {
+      transform: scale(1.04);
+    }
+
+    .package-badge,
+    .package-tier {
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .package-badge {
+      left: 10px;
+      background: rgba(28, 43, 51, 0.8);
+    }
+
+    .package-tier {
+      right: 10px;
+      background: rgba(0, 73, 91, 0.82);
+    }
+
+    .package-rating {
+      position: absolute;
+      z-index: 1;
+      bottom: 11px;
+      left: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #ffffff;
+      font-size: 12px;
+    }
+
+    .package-rating-star {
+      color: #ffc44d;
+    }
+
+    .package-rating-count {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .package-card-content {
+      padding: 15px 16px 16px;
+    }
+
+    .package-location,
+    .package-duration {
+      color: #8398a0;
+      font-size: 13px;
+    }
+
+    .package-location {
+      margin-bottom: 6px;
+    }
+
+    .package-card h3 {
+      margin-bottom: 4px;
+      color: #073b4c;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .package-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .package-price {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px;
+      color: #073b4c;
+    }
+
+    .package-price strong {
+      font-size: 21px;
+    }
+
+    .package-price span {
+      color: #8398a0;
+      font-size: 12px;
+    }
+
+    .package-details {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid #dce7ea;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #073b4c;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .package-details:hover {
+      border-color: #0a9db0;
+      background: #f0fafb;
+    }
+
+    .package-detail-copy {
+      margin-top: 12px;
+      color: #59747e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .package-detail-copy[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .packages-heading {
+        grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
+        gap: 32px;
+      }
+
+      .package-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .packages-section {
+        padding: 56px 18px 72px;
+      }
+
+      .packages-heading {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-bottom: 32px;
+      }
+
+      .packages-heading h2 {
+        font-size: 34px;
+      }
+
+      .packages-intro {
+        max-width: 400px;
+        font-size: 15px;
+      }
+
+      .packages-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 28px;
+      }
+
+      .package-filters {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .package-browse {
+        align-self: flex-end;
+      }
+
+      .package-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .package-image {
+        height: 240px;
+      }
+    }
+
+    .consultation-section {
+      padding: 0 24px 96px;
+      background: #f5fafb;
+      color: #073b4c;
+    }
+
+    .consultation-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      padding: 18px 24px;
+      border: 1px solid #e1eaed;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 3px 10px rgba(5, 52, 67, 0.08);
+    }
+
+    .consultation-icon {
+      display: grid;
+      width: 42px;
+      flex: 0 0 42px;
+      aspect-ratio: 1;
+      place-items: center;
+      border-radius: 50%;
+      background: #eaf8fa;
+      color: #08a9bd;
+      font-size: 21px;
+    }
+
+    .consultation-copy h2 {
+      margin-bottom: 3px;
+      color: #073b4c;
+      font-size: 16px;
+    }
+
+    .consultation-copy p {
+      color: #8398a0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .consultation-button {
+      min-height: 44px;
+      margin-left: auto;
+      padding: 0 28px;
+      border: 0;
+      border-radius: 8px;
+      background: #00495b;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .consultation-button:hover {
+      background: #006176;
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      isolation: isolate;
+      padding: 68px 24px 22px;
+      background: #00495b;
+      color: #ffffff;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: minmax(240px, 2fr) repeat(3, minmax(110px, 1fr));
+      gap: 48px;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      display: block;
+      width: 58px;
+      height: auto;
+      margin-bottom: 18px;
+    }
+
+    .footer-brand p {
+      max-width: 280px;
+      color: #9cbcc4;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .footer-group h2 {
+      margin-bottom: 18px;
+      color: #11b4c6;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .footer-group {
+      display: block;
+    }
+
+    .footer-group ul {
+      display: grid;
+      gap: 13px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer-group a {
+      color: #9cbcc4;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-group a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      width: min(1080px, 100%);
+      margin: 48px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      color: #7fa6b0;
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .footer-inner {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px 24px;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .consultation-section {
+        padding: 0 18px 64px;
+      }
+
+      .consultation-card {
+        flex-wrap: wrap;
+        padding: 18px;
+      }
+
+      .consultation-copy {
+        flex: 1 1 calc(100% - 60px);
+      }
+
+      .consultation-button {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .site-footer {
+        padding: 52px 20px 20px;
+      }
+
+      .footer-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 32px 18px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        margin-top: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-background" aria-hidden="true">
+    <video class="bg-video" autoplay loop muted playsinline>
+      <source src="video/background.mp4.mp4" type="video/mp4">
+    </video>
+    <div class="overlay overlay-blue"></div>
+    <div class="overlay overlay-dark"></div>
+  </div>
+
+  <header>
+    <img class="logo" src="assets\TuybaWordmark.png" alt="Tuuba Logo">
+    <nav>
+      <a href="#">Packages</a>
+      <a href="#">How it works</a>
+      <a href="#">Cities</a>
+      <a href="#about">About</a>
+    </nav>
+    <button class="btn-nav">Talk to a specialist <span aria-hidden="true">&#8594;</span></button>
+  </header>
+
+  <main class="page-content">
+    <div class="hero-story">
+      <div class="story-stage">
+    <section class="hero-container">
+    <!-- Main Section Body -->
+    <div class="hero-body">
+      <div class="hero-left">
+        <p class="hero-eyebrow">UMRAH · PERSONALIZED</p>
+        <h1>Your journey,<br>your city,<br><span>your family.</span></h1>
+        <p>Umrah journeys built around your family, stay with you every step—not as a booking agent, but as your guide.</p>
+        <div class="cta-group">
+          <button class="btn-primary">View package</button>
+          <button class="btn-secondary">Talk to a specialist</button>
+        </div>
+      </div>
+
+      <!-- Right Form Widget -->
+      <div class="booking-card">
+        <div class="card-title">Plan your Umrah</div>
+        <div class="tabs">
+          <div class="tab">Value</div>
+          <div class="tab active">Family</div>
+          <div class="tab">Premium</div>
+        </div>
+
+        <div class="input-group">
+          <label>DEPARTURE CITY</label>
+          <input type="text" class="input-box" placeholder="Search your city">
+        </div>
+
+        <div class="input-group">
+          <label>TRAVELERS</label>
+          <select class="input-box">
+            <option>2 people</option>
+            <option>4 people</option>
+            <option>6+ people</option>
+          </select>
+        </div>
+
+        <button class="btn-submit">Get a free quote</button>
+      </div>
+    </div>
+
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="about-content">
+        <p class="about-eyebrow">WHO WE ARE</p>
+        <h2>Tuuba is a US-based Umrah service built on one belief: every pilgrim deserves a journey as personal as their intention.</h2>
+        <p class="about-description">We start with your city, plan around your family, and stay with you every step - not as a booking agent, but as your guide.</p>
+
+    <div class="stats-container">
+      <div class="stat-item">
+        <h3>12+</h3>
+        <p>US departure cities</p>
+      </div>
+      <div class="stat-item">
+        <h3>4,200+</h3>
+        <p>Families served</p>
+      </div>
+      <div class="stat-item">
+        <h3>100%</h3>
+        <p>Human support</p>
+      </div>
+    </div>
+      </div>
+    </section>
+      </div>
+    </div>
+    <section class="packages-section" id="packages" aria-labelledby="packages-title">
+      <div class="packages-shell">
+        <div class="packages-heading">
+          <div>
+            <p class="packages-kicker">UMRAH PACKAGES</p>
+            <h2 id="packages-title">Three ways to make<br>the journey.</h2>
+          </div>
+          <p class="packages-intro">Every package includes a real coordinator, not a chatbot. Choose the level of care that fits your family.</p>
+        </div>
+
+        <div class="packages-toolbar">
+          <div class="package-filters" role="group" aria-label="Filter packages">
+            <button class="package-filter" type="button" data-package-filter="all" aria-pressed="true">All</button>
+            <button class="package-filter" type="button" data-package-filter="family" aria-pressed="false">Family</button>
+            <button class="package-filter" type="button" data-package-filter="value" aria-pressed="false">Value</button>
+            <button class="package-filter" type="button" data-package-filter="premium" aria-pressed="false">Premium</button>
+          </div>
+          <div class="package-browse" role="group" aria-label="Browse package filters">
+            <button class="package-arrow" type="button" data-filter-step="-1" aria-label="Previous package filter">&larr;</button>
+            <button class="package-arrow" type="button" data-filter-step="1" aria-label="Next package filter">&rarr;</button>
+          </div>
+        </div>
+
+        <div class="package-grid" aria-live="polite">
+          <article class="package-card" data-category="value">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Pilgrims gathered at Masjid al-Haram" loading="lazy">
+              <span class="package-badge">Most booked</span>
+              <span class="package-tier">Value</span>
+              <div class="package-rating" aria-label="Rated 4.8 out of 5 from 1,200 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>4.8</strong><span class="package-rating-count">(1.2k)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">Makkah, Saudi Arabia</p>
+              <h3>Makkah Essentials</h3>
+              <p class="package-duration">5 days · 4 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$2,800</strong><span>/ per person</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-makkah">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-makkah" hidden>Stay close to the Haram with practical lodging and a coordinator available throughout your journey.</p>
+            </div>
+          </article>
+
+          <article class="package-card" data-category="family">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Mosque architecture in Madinah" loading="lazy">
+              <span class="package-badge">Best for families</span>
+              <span class="package-tier">Family</span>
+              <div class="package-rating" aria-label="Rated 4.9 out of 5 from 3,500 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>4.9</strong><span class="package-rating-count">(3.5k)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">Makkah &amp; Madinah</p>
+              <h3>Family Umrah Journey</h3>
+              <p class="package-duration">8 days · 7 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$4,200</strong><span>/ per family</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-family">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-family" hidden>A family-paced Makkah and Madinah itinerary with a dedicated trip coordinator.</p>
+            </div>
+          </article>
+
+          <article class="package-card" data-category="premium">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="View of a mosque and its minarets" loading="lazy">
+              <span class="package-badge">Haram-view rooms</span>
+              <span class="package-tier">Premium</span>
+              <div class="package-rating" aria-label="Rated 5 out of 5 from 890 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>5</strong><span class="package-rating-count">(890)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">Makkah, Saudi Arabia</p>
+              <h3>Premium Haram View</h3>
+              <p class="package-duration">10 days · 9 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$7,500</strong><span>/ per person</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-premium">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-premium" hidden>Premium accommodation near the Haram, private transfers, and personal trip support.</p>
+            </div>
+          </article>
+
+          <article class="package-card" data-category="family">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=900&amp;q=85&amp;sat=-20" alt="Minarets near the Grand Mosque" loading="lazy">
+              <span class="package-badge">Includes Madinah</span>
+              <span class="package-tier">Family</span>
+              <div class="package-rating" aria-label="Rated 4.9 out of 5 from 2,100 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>4.9</strong><span class="package-rating-count">(2.1k)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">Madinah &amp; Makkah</p>
+              <h3>Madinah &amp; Makkah</h3>
+              <p class="package-duration">9 days · 8 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$5,100</strong><span>/ per family</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-madinah">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-madinah" hidden>Visit both holy cities with arranged transport and a dedicated family coordinator.</p>
+            </div>
+          </article>
+
+          <article class="package-card" data-category="value">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Passenger airplane flying above the clouds" loading="lazy">
+              <span class="package-badge">Flights included</span>
+              <span class="package-tier">Value</span>
+              <div class="package-rating" aria-label="Rated 4.7 out of 5 from 980 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>4.7</strong><span class="package-rating-count">(980)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">From your US city</p>
+              <h3>Departure Day Package</h3>
+              <p class="package-duration">6 days · 5 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$3,200</strong><span>/ per person</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-departure">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-departure" hidden>Flight planning and departure-day assistance from your chosen US city.</p>
+            </div>
+          </article>
+
+          <article class="package-card" data-category="premium">
+            <div class="package-image">
+              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Pilgrims walking together through a mosque courtyard" loading="lazy">
+              <span class="package-badge">Private guide</span>
+              <span class="package-tier">Premium</span>
+              <div class="package-rating" aria-label="Rated 5 out of 5 from 540 reviews"><span class="package-rating-star" aria-hidden="true">&#9733;</span><strong>5</strong><span class="package-rating-count">(540)</span></div>
+            </div>
+            <div class="package-card-content">
+              <p class="package-location">Makkah &amp; Madinah</p>
+              <h3>Private Umrah &amp; Guide</h3>
+              <p class="package-duration">12 days · 11 nights</p>
+              <div class="package-card-footer">
+                <p class="package-price"><strong>$9,800</strong><span>/ per person</span></p>
+                <button class="package-details" type="button" aria-expanded="false" aria-controls="detail-guide">View details</button>
+              </div>
+              <p class="package-detail-copy" id="detail-guide" hidden>A private guide, flexible daily schedule, and tailored support in both cities.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="consultation-section" id="consultation" aria-label="Free consultation">
+      <div class="consultation-card">
+        <span class="consultation-icon" aria-hidden="true">&#9742;</span>
+        <div class="consultation-copy">
+          <h2>Not sure which package fits?</h2>
+          <p>Talk to a specialist - no sales pressure, just honest guidance.</p>
+        </div>
+        <button class="consultation-button" type="button" data-scroll-to-booking>Free consultation</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/TuybaWordmark.png" alt="Tuuba">
+        <p>US-based Umrah travel service. Personalized journeys from every major American city.</p>
+      </div>
+      <nav class="footer-group" aria-label="Company">
+        <h2>COMPANY</h2>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#about">How it works</a></li>
+          <li><a href="#packages">Cities</a></li>
+          <li><a href="#about">Team</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-group" aria-label="Packages">
+        <h2>PACKAGES</h2>
+        <ul>
+          <li><a href="#packages" data-footer-filter="value">Value</a></li>
+          <li><a href="#packages" data-footer-filter="family">Family</a></li>
+          <li><a href="#packages" data-footer-filter="premium">Premium</a></li>
+          <li><a href="#packages" data-footer-filter="all">Custom</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-group" aria-label="Support">
+        <h2>SUPPORT</h2>
+        <ul>
+          <li><a href="#consultation">FAQ</a></li>
+          <li><a href="#consultation">Contact</a></li>
+          <li><a href="#consultation">Specialist call</a></li>
+          <li><a href="#consultation">Privacy</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="footer-year">2026</span> Tuuba Inc. All rights reserved.</p>
+      <p>Made with care for every pilgrim.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    const statsContainer = document.querySelector(".stats-container");
+    const statCounts = statsContainer.querySelectorAll(".stat-item h3");
+    const numberFormatter = new Intl.NumberFormat("en-US");
+    const stats = Array.from(statCounts, (stat) => {
+      const match = stat.textContent.trim().match(/^([\d,]+)(.*)$/);
+      return {
+        element: stat,
+        target: Number(match[1].replace(/,/g, "")),
+        suffix: match[2]
+      };
+    });
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelector(".hero-story").classList.add("static-story");
+      stats.forEach(({ element, target, suffix }) => {
+        element.textContent = `${numberFormatter.format(target)}${suffix}`;
+      });
+    } else if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const storyTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hero-story",
+          start: () => `top top+=${document.querySelector("header").offsetHeight}`,
+          end: "bottom bottom",
+          scrub: 0.8
+        }
+      });
+
+      storyTimeline.fromTo(".bg-video", {
+        scale: 1
+      }, {
+        scale: 1.25,
+        ease: "none",
+        duration: 0.93
+      }, 0);
+
+      storyTimeline.to(".hero-body", {
+        autoAlpha: 0,
+        y: -72,
+        ease: "none",
+        duration: 0.55
+      }, 0.05);
+
+      /* Blue overlay fades out as we transition to the dark about view */
+      storyTimeline.to(".overlay-blue", {
+        autoAlpha: 0,
+        ease: "none",
+        duration: 0.45
+      }, 0.25);
+
+      /* Dark overlay fades in to replace it */
+      storyTimeline.fromTo(".overlay-dark", {
+        autoAlpha: 0
+      }, {
+        autoAlpha: 1,
+        ease: "none",
+        duration: 0.45
+      }, 0.35);
+
+      storyTimeline.fromTo(".about-content", {
+        autoAlpha: 0,
+        y: 72
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        ease: "none",
+        duration: 0.45
+      }, 0.4);
+
+      storyTimeline.fromTo(statsContainer, {
+        autoAlpha: 0,
+        y: 48
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        ease: "none",
+        duration: 0.25
+      }, 0.7);
+
+      const counters = stats.map((stat) => ({ ...stat, value: 0 }));
+      let scrollResetTimeout;
+      let isScrollBurst = false;
+
+      window.addEventListener("scroll", () => {
+        if (!isScrollBurst) {
+          counters.forEach((counter) => {
+            gsap.killTweensOf(counter);
+            gsap.set(counter, { value: 0 });
+            counter.element.textContent = `0${counter.suffix}`;
+
+            gsap.to(counter, {
+              value: counter.target,
+              duration: 1.4,
+              ease: "power2.out",
+              onUpdate: () => {
+                counter.element.textContent = `${numberFormatter.format(Math.floor(counter.value))}${counter.suffix}`;
+              }
+            });
+          });
+        }
+
+        isScrollBurst = true;
+        window.clearTimeout(scrollResetTimeout);
+        scrollResetTimeout = window.setTimeout(() => {
+          isScrollBurst = false;
+        }, 180);
+      }, { passive: true });
+    } else {
+      document.querySelector(".hero-story").classList.add("static-story");
+    }
+
+  </script>
+  <script>
+    const packageFilters = Array.from(document.querySelectorAll("[data-package-filter]"));
+    const packageCards = Array.from(document.querySelectorAll(".package-card"));
+    const packageFilterOrder = ["all", "family", "value", "premium"];
+
+    const setPackageFilter = (category) => {
+      packageFilters.forEach((filter) => {
+        const isActive = filter.dataset.packageFilter === category;
+        filter.setAttribute("aria-pressed", String(isActive));
+      });
+
+      packageCards.forEach((card) => {
+        card.hidden = category !== "all" && card.dataset.category !== category;
+      });
+    };
+
+    packageFilters.forEach((filter) => {
+      filter.addEventListener("click", () => setPackageFilter(filter.dataset.packageFilter));
+    });
+
+    document.querySelectorAll("[data-filter-step]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const activeIndex = packageFilterOrder.findIndex((category) =>
+          packageFilters.find((filter) => filter.getAttribute("aria-pressed") === "true")?.dataset.packageFilter === category
+        );
+        const nextIndex = (activeIndex + Number(button.dataset.filterStep) + packageFilterOrder.length) % packageFilterOrder.length;
+        setPackageFilter(packageFilterOrder[nextIndex]);
+      });
+    });
+
+    document.querySelectorAll(".package-details").forEach((button) => {
+      button.addEventListener("click", () => {
+        const details = document.getElementById(button.getAttribute("aria-controls"));
+        const isExpanded = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", String(!isExpanded));
+        button.textContent = isExpanded ? "View details" : "Hide details";
+        details.hidden = isExpanded;
+      });
+    });
+
+    document.querySelectorAll("[data-footer-filter]").forEach((link) => {
+      link.addEventListener("click", () => {
+        const filter = document.querySelector(`[data-package-filter="${link.dataset.footerFilter}"]`);
+        filter?.click();
+      });
+    });
+
+    document.querySelector("[data-scroll-to-booking]").addEventListener("click", () => {
+      document.querySelector(".booking-card").scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "center"
+      });
+    });
+
+    document.querySelector("#footer-year").textContent = new Date().getFullYear();
+
+    const backgroundLayer = document.querySelector(".page-background");
+    const backgroundVideo = document.querySelector(".bg-video");
+    const packagesSection = document.querySelector(".packages-section");
+    const siteHeader = document.querySelector("header");
+
+    const syncBackgroundVideo = () => {
+      const packagesStart = packagesSection.getBoundingClientRect().top + window.scrollY - siteHeader.offsetHeight;
+      const isInHero = window.scrollY < packagesStart;
+      backgroundLayer.classList.toggle("background-hidden", !isInHero);
+      siteHeader.classList.toggle("header-scrolled", !isInHero);
+
+      if (isInHero && backgroundVideo.paused) {
+        backgroundVideo.play().catch(() => {});
+      } else if (!isInHero && !backgroundVideo.paused) {
+        backgroundVideo.pause();
+      }
+    };
+
+    window.addEventListener("scroll", syncBackgroundVideo, { passive: true });
+    window.addEventListener("resize", syncBackgroundVideo);
+    syncBackgroundVideo();
+
+  </script>
+</body>
+</html>
