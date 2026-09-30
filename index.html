@@ -59,6 +59,10 @@
       overflow-x: hidden;
     }
 
+    body.mobile-menu-open {
+      overflow: hidden;
+    }
+
     .page-background {
       position: fixed;
       inset: 0;
@@ -266,7 +270,8 @@
     }
 
     .mobile-menu-toggle,
-    .mobile-menu {
+    .mobile-menu,
+    .mobile-menu-backdrop {
       display: none;
     }
 
@@ -730,10 +735,37 @@
 
       .mobile-menu-toggle {
         display: flex;
+        position: relative;
+        z-index: 3;
+      }
+
+      .header-logo-link {
+        position: relative;
+        z-index: 3;
+      }
+
+      .mobile-menu-backdrop {
+        position: fixed;
+        z-index: 1;
+        inset: 0;
+        display: block;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.25s ease, visibility 0.25s;
+      }
+
+      .mobile-menu-backdrop.is-active {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
       }
 
       .mobile-menu {
         position: absolute;
+        z-index: 2;
         top: calc(100% + 8px);
         right: 24px;
         display: grid;
@@ -851,6 +883,7 @@
         margin-top: 36px;
       }
     }
+    
 
     .packages-section {
       position: relative;
@@ -1321,6 +1354,7 @@
       <span></span>
       <span></span>
     </button>
+    <div class="mobile-menu-backdrop" aria-hidden="true"></div>
     <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true">
       <a class="mobile-menu-link" href="#packages" data-mobile-nav-link><span class="mobile-menu-icon" aria-hidden="true">&#128230;</span>Packages</a>
       <a class="mobile-menu-link" href="#itinerary" data-mobile-nav-link><span class="mobile-menu-icon" aria-hidden="true">&#128203;</span>How it works</a>
@@ -2567,6 +2601,7 @@
     const animeNavIndicator = animeNav.querySelector(".anime-nav-indicator");
     const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
     const mobileMenu = document.querySelector("#mobile-menu");
+    const mobileMenuBackdrop = document.querySelector(".mobile-menu-backdrop");
     const mobileNavLinks = Array.from(mobileMenu.querySelectorAll("[data-mobile-nav-link]"));
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let activeNavLink = animeNavLinks.find((link) => link.hash === window.location.hash) || animeNavLinks[0];
@@ -2605,6 +2640,8 @@
 
     const closeMobileMenu = () => {
       mobileMenu.classList.remove("is-open");
+      mobileMenuBackdrop.classList.remove("is-active");
+      document.body.classList.remove("mobile-menu-open");
       mobileMenu.setAttribute("aria-hidden", "true");
       mobileMenuToggle.setAttribute("aria-expanded", "false");
       mobileMenuToggle.setAttribute("aria-label", "Open navigation menu");
@@ -2613,10 +2650,14 @@
     mobileMenuToggle.addEventListener("click", () => {
       const isOpen = mobileMenuToggle.getAttribute("aria-expanded") !== "true";
       mobileMenu.classList.toggle("is-open", isOpen);
+      mobileMenuBackdrop.classList.toggle("is-active", isOpen);
+      document.body.classList.toggle("mobile-menu-open", isOpen);
       mobileMenu.setAttribute("aria-hidden", String(!isOpen));
       mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
       mobileMenuToggle.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
     });
+
+    mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
 
     mobileNavLinks.forEach((link) => {
       link.addEventListener("click", () => {
