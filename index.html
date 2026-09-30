@@ -90,6 +90,10 @@
       min-height: calc(100vh - var(--header-height));
     }
 
+    .hero-story.static-story .hero-container {
+      overflow: visible;
+    }
+
     .bg-video {
       position: absolute;
       inset: 0;
@@ -491,15 +495,58 @@
 
     @media (max-width: 480px) {
       :root {
-        --header-height: 64px;
+        --header-height: 112px;
+      }
+
+      .hero-story {
+        height: auto;
+      }
+
+      .story-stage {
+        position: relative;
+        top: auto;
+        height: auto;
+        overflow: visible;
+      }
+
+      .hero-container,
+      .about-section {
+        position: relative;
+        inset: auto;
+        min-height: calc(100vh - var(--header-height));
+      }
+
+      .hero-container {
+        overflow: visible;
       }
 
       header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 44px auto;
+        align-content: center;
+        gap: 8px 0;
+        height: auto;
+        min-height: var(--header-height);
         padding: 0 20px;
       }
 
       nav {
-        display: none;
+        grid-column: 1 / -1;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .btn-nav {
+        grid-column: 2;
+        grid-row: 1;
+        gap: 6px;
+        padding: 9px 10px;
+        font-size: 12px;
       }
 
       .hero-body {
