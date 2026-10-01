@@ -739,6 +739,12 @@
         z-index: 3;
       }
 
+      .booking-card {
+        background: #ffffff;
+        opacity: 1;
+        visibility: visible;
+      }
+
       .header-logo-link {
         position: relative;
         z-index: 3;
@@ -856,6 +862,9 @@
       .booking-card {
         width: 100%;
         flex-basis: auto;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
       }
 
       .stats-container {
@@ -2129,113 +2138,282 @@
       .testimonial-section {
         position: relative;
         z-index: 2;
-        padding: 0 24px 104px;
-        background: #ffffff;
+        display: grid;
+        min-height: 100vh;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        overflow: hidden;
+        background: #eef6f6;
         color: #073b4c;
       }
 
-      .testimonial-shell {
-        width: min(1200px, 100%);
+      .testimonial-copy {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        justify-content: center;
+        width: min(100%, 720px);
         margin: 0 auto;
-        padding: 108px 0 0;
-        border-top: 1px solid #d9e3e5;
+        padding: 64px clamp(32px, 5vw, 76px);
       }
 
-      .testimonial-quote-mark {
-        margin-bottom: 38px;
-        color: #12b4c8;
-        font-size: 76px;
+      .testimonial-eyebrow {
+        margin-bottom: 16px;
+        color: #078da1;
+        font-size: 11px;
         font-weight: 700;
-        line-height: 0.8;
-        text-align: center;
+        letter-spacing: 1px;
       }
 
-      .testimonial-quote {
-        max-width: 850px;
-        margin: 0 auto;
+      .testimonial-heading {
+        max-width: 520px;
+        margin-bottom: 12px;
         color: #073b4c;
         font-size: 44px;
-        font-weight: 400;
-        line-height: 1.4;
-        text-align: center;
+        font-weight: 700;
+        line-height: 1.08;
       }
 
-      .testimonial-attribution {
+      .testimonial-intro {
+        max-width: 460px;
+        color: #617f88;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .testimonial-viewport {
+        --testimonial-card-height: 154px;
+        --testimonial-card-gap: 14px;
+        position: relative;
+        height: calc(var(--testimonial-card-height) * 2 + var(--testimonial-card-gap) * 0.5);
+        margin-top: 30px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+        mask-image: linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 4%, #000 96%, transparent 100%);
+      }
+
+      .testimonial-viewport::-webkit-scrollbar {
+        width: 0;
+      }
+
+      .testimonial-viewport:hover {
+        scrollbar-width: thin;
+        scrollbar-color: #82bac2 transparent;
+      }
+
+      .testimonial-viewport:hover::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .testimonial-viewport:hover::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background: #82bac2;
+      }
+
+      .testimonial-viewport:hover::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .testimonial-track {
+        display: grid;
+        gap: var(--testimonial-card-gap);
+        padding-block: calc(var(--testimonial-card-height) / 2 + var(--testimonial-card-gap) / 4);
+        will-change: transform;
+      }
+
+      .testimonial-card {
+        display: flex;
+        min-height: var(--testimonial-card-height);
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 20px;
+        border: 1px solid #dbe8e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #073b4c;
+        opacity: 0.34;
+        transform: scale(0.92);
+        transition: opacity 0.72s ease, transform 0.72s ease, box-shadow 0.72s ease, border-color 0.72s ease;
+      }
+
+      .testimonial-card.is-active {
+        border-color: #b5d8dc;
+        box-shadow: 0 12px 32px rgba(7, 59, 76, 0.12);
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .testimonial-card blockquote {
+        color: #164d5b;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      .testimonial-card figcaption {
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 38px;
+        gap: 10px;
       }
 
       .testimonial-avatar {
-        display: grid;
-        width: 44px;
-        height: 44px;
-        flex: 0 0 44px;
-        place-items: center;
-        overflow: hidden;
-        border-radius: 50%;
-        background: #e5f4f5;
-        color: #087f91;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .testimonial-avatar img {
         display: block;
-        width: 100%;
-        height: 100%;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        overflow: hidden;
+        border: 1px solid #dce8e9;
+        border-radius: 50%;
         object-fit: cover;
       }
 
       .testimonial-person {
         display: grid;
-        gap: 4px;
+        gap: 3px;
         color: #073b4c;
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .testimonial-person span {
         color: #8398a0;
+        font-size: 10px;
+      }
+
+      .testimonial-visual {
+        position: relative;
+        min-width: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        background: #315761;
+      }
+
+      .testimonial-visual img {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 48%;
+      }
+
+      .testimonial-visual::after {
+        position: absolute;
+        inset: 45% 0 0;
+        background: linear-gradient(transparent, rgba(3, 26, 32, 0.62));
+        content: "";
+        pointer-events: none;
+      }
+
+      .testimonial-visual-caption {
+        position: absolute;
+        z-index: 1;
+        right: 32px;
+        bottom: 34px;
+        left: 32px;
+        color: #ffffff;
+      }
+
+      .testimonial-visual-caption p {
+        margin-bottom: 8px;
+        color: #9ae8ef;
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .testimonial-visual-caption h3 {
+        max-width: 420px;
+        font-size: 28px;
+        line-height: 1.15;
       }
 
       @media (max-width: 600px) {
         .testimonial-section {
-          padding: 0 20px 76px;
+          grid-template-columns: 1fr;
+          min-height: 0;
         }
 
-        .testimonial-shell {
-          padding-top: 72px;
+        .testimonial-copy {
+          padding: 64px 20px 52px;
         }
 
-        .testimonial-quote-mark {
-          margin-bottom: 34px;
-          font-size: 50px;
-        }
-
-        .testimonial-quote {
+        .testimonial-heading {
           font-size: 34px;
-          line-height: 1.3;
         }
 
-        .testimonial-attribution {
-          margin-top: 30px;
+        .testimonial-viewport {
+          --testimonial-card-height: 148px;
+          --testimonial-card-gap: 12px;
+          margin-top: 24px;
+        }
+
+        .testimonial-card {
+          padding: 17px 16px;
+        }
+
+        .testimonial-card blockquote {
+          font-size: 14px;
+        }
+
+        .testimonial-visual {
+          min-height: 58svh;
+        }
+
+        .testimonial-visual-caption {
+          right: 22px;
+          bottom: 24px;
+          left: 22px;
+        }
+
+        .testimonial-visual-caption h3 {
+          font-size: 24px;
+        }
+
+        @media (max-width: 380px) {
+          .testimonial-viewport {
+            --testimonial-card-height: 158px;
+          }
         }
       }
     </style>
-    <section class="testimonial-section" aria-label="Traveler testimonial">
-      <div class="testimonial-shell">
-        <figure>
-          <div class="testimonial-quote-mark" aria-hidden="true">&#8220;</div>
-          <blockquote class="testimonial-quote">
-            <p>&ldquo;Tuyba made every step feel calm. We always knew what came next, and there was a real person to call whenever our family had a question.&rdquo;</p>
-          </blockquote>
-          <figcaption class="testimonial-attribution">
-            <span class="testimonial-avatar" aria-hidden="true"><img src="assets/aisha.png" alt=""></span>
-            <span class="testimonial-person"><strong>Aisha Rahman</strong><span>Umrah traveler, Chicago</span></span>
-          </figcaption>
-        </figure>
+    <section class="testimonial-section" aria-labelledby="testimonial-title">
+      <div class="testimonial-copy">
+        <p class="testimonial-eyebrow">TRAVELER STORIES</p>
+        <h2 class="testimonial-heading" id="testimonial-title">Care that stays with you.</h2>
+        <p class="testimonial-intro">One family shares what it felt like to have a real person beside them throughout the journey.</p>
+        <div class="testimonial-viewport" aria-label="Aisha Rahman's testimonial">
+          <div class="testimonial-track">
+            <figure class="testimonial-card is-active">
+              <blockquote>&ldquo;Tuyba made every step feel calm.&rdquo;</blockquote>
+              <figcaption>
+                <img class="testimonial-avatar" src="assets/aisha.png" alt="">
+                <span class="testimonial-person"><strong>Aisha Rahman</strong><span>Umrah traveler, Chicago</span></span>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <blockquote>&ldquo;We always knew what came next.&rdquo;</blockquote>
+              <figcaption>
+                <img class="testimonial-avatar" src="assets/aisha.png" alt="">
+                <span class="testimonial-person"><strong>Aisha Rahman</strong><span>Umrah traveler, Chicago</span></span>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <blockquote>&ldquo;There was a real person to call whenever our family had a question.&rdquo;</blockquote>
+              <figcaption>
+                <img class="testimonial-avatar" src="assets/aisha.png" alt="">
+                <span class="testimonial-person"><strong>Aisha Rahman</strong><span>Umrah traveler, Chicago</span></span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-visual">
+        <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&amp;fit=crop&amp;w=1600&amp;h=2000&amp;q=90" alt="Pilgrims gathered around the Kaaba at Masjid al-Haram" loading="lazy">
+        <div class="testimonial-visual-caption">
+          <p>MAKKAH, SAUDI ARABIA</p>
+          <h3>A journey shaped around your family.</h3>
+        </div>
       </div>
     </section>
     <style>
@@ -2720,13 +2898,15 @@
       });
     } else if (window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
+      const isMobileLayout = () => window.matchMedia("(max-width: 767px)").matches;
 
       const storyTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: ".hero-story",
           start: () => `top top+=${document.querySelector("header").offsetHeight}`,
           end: "bottom bottom",
-          scrub: 0.8
+          scrub: 0.8,
+          invalidateOnRefresh: true
         }
       });
 
@@ -2739,8 +2919,15 @@
       }, 0);
 
       storyTimeline.to(".hero-body", {
-        autoAlpha: 0,
-        y: -72,
+        autoAlpha: () => isMobileLayout() ? 1 : 0,
+        y: () => isMobileLayout() ? 0 : -72,
+        ease: "none",
+        duration: 0.55
+      }, 0.05);
+
+      storyTimeline.to(".hero-left", {
+        autoAlpha: () => isMobileLayout() ? 0 : 1,
+        y: () => isMobileLayout() ? -72 : 0,
         ease: "none",
         duration: 0.55
       }, 0.05);
@@ -2936,6 +3123,98 @@
       guideRevealTargets.forEach((target) => guideRevealObserver.observe(target));
     }
 
+  </script>
+  <script>
+    (() => {
+      const section = document.querySelector(".testimonial-section");
+      const track = section?.querySelector(".testimonial-track");
+      const viewport = section?.querySelector(".testimonial-viewport");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      if (!section || !track || !viewport || !window.gsap || reducedMotion.matches) return;
+
+      let intervalId = 0;
+      let isAnimating = false;
+      let scrollIdleTimeout = 0;
+
+      const updateActiveCard = () => {
+        const viewportCenter = viewport.getBoundingClientRect().top + viewport.clientHeight / 2;
+        let closestCard = null;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        Array.from(track.children).forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
+          if (distance < closestDistance) {
+            closestCard = card;
+            closestDistance = distance;
+          }
+        });
+
+        Array.from(track.children).forEach((card) => {
+          card.classList.toggle("is-active", card === closestCard);
+        });
+      };
+
+      const advanceCarousel = () => {
+        if (isAnimating || track.children.length < 3 || viewport.scrollTop > 1) return;
+
+        const firstCard = track.firstElementChild;
+        const nextActiveCard = firstCard.nextElementSibling;
+        const cardGap = parseFloat(getComputedStyle(track).rowGap) || 0;
+        const step = firstCard.offsetHeight + cardGap;
+        isAnimating = true;
+
+        Array.from(track.children).forEach((card) => {
+          card.classList.toggle("is-active", card === nextActiveCard);
+        });
+
+        gsap.to(track, {
+          y: -step,
+          duration: 0.95,
+          ease: "power2.inOut",
+          onComplete: () => {
+            track.appendChild(firstCard);
+            gsap.set(track, { y: 0 });
+            updateActiveCard();
+            isAnimating = false;
+          }
+        });
+      };
+
+      const startCarousel = () => {
+        if (viewport.scrollTop > 1) return;
+        if (!intervalId) intervalId = window.setInterval(advanceCarousel, 3000);
+      };
+
+      const pauseCarousel = () => {
+        window.clearInterval(intervalId);
+        intervalId = 0;
+        if (isAnimating) {
+          gsap.killTweensOf(track);
+          gsap.set(track, { y: 0 });
+          isAnimating = false;
+          updateActiveCard();
+        }
+      };
+
+      viewport.addEventListener("scroll", () => {
+        pauseCarousel();
+        updateActiveCard();
+        window.clearTimeout(scrollIdleTimeout);
+        scrollIdleTimeout = window.setTimeout(() => {
+          if (viewport.scrollTop <= 1) startCarousel();
+        }, 400);
+      }, { passive: true });
+
+      section.addEventListener("focusin", pauseCarousel);
+      section.addEventListener("focusout", (event) => {
+        if (!section.contains(event.relatedTarget)) startCarousel();
+      });
+
+      updateActiveCard();
+      startCarousel();
+    })();
   </script>
 </body>
 </html>
